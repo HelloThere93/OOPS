@@ -1,0 +1,18 @@
+class Family:
+    def __init__(self, name,age,gender,hobby,relation):
+        self.name=name
+        self.age=age
+        self.gender=gender
+        self.relation=relation
+        self.hobby=hobby
+
+    def watchingamovie(self):
+        print("nice movie")
+
+object1=Family("adi",14,"male","coding","elder son")
+object2=Family("yashi",42,"female","reading","mom")       
+
+print(object1.age)
+print(object2.relation)
+
+object2.watchingamovie()

@@ -1,0 +1,97 @@
+class Mobile:
+    camera = True
+    touchscreen = True
+    maxbattery = "100%"
+    internet = True
+    volumebuttons = 2
+    powerbuttons = 1
+    cameras = "varies"
+
+    def snap_picture(self, x):
+        print(x, "snapped a quick photo")
+
+    def connect_to_wifi(self, x):
+        print(x, "is now connected to Wi-Fi")
+
+
+iphone16 = Mobile()
+samsung_galaxy_s25 = Mobile()
+realme_gt_7t = Mobile()
+nokia3310 = Mobile()
+
+iphone16.snap_picture("iPhone16")
+samsung_galaxy_s25.connect_to_wifi("Galaxy S25")
+print(realme_gt_7t.volumebuttons)
+
+
+class Laptop:
+    screen = "15.6 inch"
+    keyboard = True
+    touchpad = True
+    battery = "6000mAh"
+    usb_ports = 3
+    has_wifi = True
+
+    def open_app(self, app_name):
+        print(f"Firing up {app_name} on the laptop")
+
+    def shutdown(self):
+        print("Laptop is shutting down now")
+
+
+dell_xps = Laptop()
+macbook_pro = Laptop()
+hp_pavilion = Laptop()
+lenovo_ideapad = Laptop()
+
+dell_xps.open_app("VS Code")
+macbook_pro.shutdown()
+print(hp_pavilion.usb_ports)
+
+
+class Car:
+    wheels = 4
+    engine = "V6"
+    ac = True
+    seats = 5
+    fuel = "Petrol"
+
+    def start_engine(self, name):
+        print(name, "engine is now running")
+
+    def honk(self):
+        print("Beep beep!")
+
+
+bmw = Car()
+toyota = Car()
+tesla = Car()
+audi = Car()
+
+bmw.start_engine("BMW X5")
+audi.honk()
+print(tesla.seats)
+
+
+class Book:
+    pages = 300
+    cover = "Paperback"
+    language = "English"
+    genre = "Fiction"
+    author = "Unknown"
+
+    def read_page(self, page_number):
+        print(f"You're reading page {page_number}")
+
+    def bookmark(self, page_number):
+        print(f"Page {page_number} bookmarked")
+
+
+harry_potter = Book()
+lord_of_the_rings = Book()
+atomic_habits = Book()
+clean_code = Book()
+
+harry_potter.read_page(25)
+atomic_habits.bookmark(87)
+print(clean_code.genre)

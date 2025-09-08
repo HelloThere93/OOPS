@@ -1,0 +1,33 @@
+import os
+import pygame
+
+pygame.init()
+pygame.display.set_caption("Space Invaders Game")
+screen = pygame.display.set_mode((1000, 800))
+bg = pygame.transform.scale(pygame.image.load(os.path.join("spaceinvaders/images/bground.png")),(1000,800))
+
+redship = pygame.image.load(os.path.join("spaceinvaders/images/red.png"))
+yellowship = pygame.image.load(os.path.join("spaceinvaders/images/yellow.png"))
+red_ship = pygame.transform.rotate(pygame.transform.scale(redship, (60,40)),270)
+yellow_ship = pygame.transform.rotate(pygame.transform.scale(yellowship,(60,40)), 90)
+def drawWindow(red,yellow):
+    screen.blit(bg, (0,0))
+    screen.blit(red_ship,(red.x,red.y))
+    screen.blit(yellow_ship,(yellow.x,yellow.y))
+    pygame.display.update()
+
+
+def main():
+    while True:
+        red=pygame.Rect(900,300,60,40)
+        yellow=pygame.Rect(100,300,60, 40)
+        for i in pygame.event.get():
+
+
+            if i.type == pygame.QUIT:
+                quit()
+        drawWindow(red, yellow)
+
+
+main()
+

@@ -5,29 +5,87 @@ pygame.init()
 pygame.display.set_caption("Space Invaders Game")
 screen = pygame.display.set_mode((1000, 800))
 bg = pygame.transform.scale(pygame.image.load(os.path.join("spaceinvaders/images/bground.png")),(1000,800))
-
+velocity = 1
+bvelocity = 1
 redship = pygame.image.load(os.path.join("spaceinvaders/images/red.png"))
 yellowship = pygame.image.load(os.path.join("spaceinvaders/images/yellow.png"))
 red_ship = pygame.transform.rotate(pygame.transform.scale(redship, (60,40)),270)
 yellow_ship = pygame.transform.rotate(pygame.transform.scale(yellowship,(60,40)), 90)
-def drawWindow(red,yellow):
+
+def drawWindow(red,yellow, redbullet, yellowbullet):
+    
     screen.blit(bg, (0,0))
     screen.blit(red_ship,(red.x,red.y))
     screen.blit(yellow_ship,(yellow.x,yellow.y))
+    for i in redbullet:
+        pygame.draw.rect(screen,"red", i)
+    for i in yellowbullet:
+        pygame.draw.rect(screen,"yellow", i)
+    
     pygame.display.update()
 
 
+def redShipMovement(keypress, red):
+    if keypress[pygame.K_LEFT]:
+        red.x -= velocity
+    if keypress[pygame.K_RIGHT]:
+        red.x += velocity
+    if keypress[pygame.K_DOWN]:
+        red.y += velocity
+    if keypress[pygame.K_UP]:
+        red.y -= velocity
+
+
+def yellowShipMovement(keypress, yellow):
+    if keypress[pygame.K_d]:
+        yellow.x += velocity
+    if keypress[pygame.K_a]:
+        yellow.x -= velocity
+    if keypress[pygame.K_s]:
+        yellow.y += velocity
+    if keypress[pygame.K_w]:
+        yellow.y -= velocity
+
+def handleBullets(redbullet, yellowbullet, red , yellow):
+    for bullet in redbullet:
+        bullet.x -= bvelocity
+
+    
+    
+    for bullet in yellowbullet:
+        bullet.x += bvelocity
+
+    
+     
+
 def main():
+    red=pygame.Rect(900,300,60,40)
+    yellow=pygame.Rect(100,300,60, 40)
+    yellowbullet=[]
+    redbullet=[]
     while True:
-        red=pygame.Rect(900,300,60,40)
-        yellow=pygame.Rect(100,300,60, 40)
+       
+        
+        
+        
         for i in pygame.event.get():
 
 
             if i.type == pygame.QUIT:
                 quit()
-        drawWindow(red, yellow)
 
+            if i.type == pygame.KEYDOWN:
+                if i.key == pygame.K_LSHIFT:
+                    bullet = pygame.Rect(yellow.x + yellow.width, yellow.y + yellow.height//2 - 2, 20, 10)
+                    yellowbullet.append(bullet)
+                if i.key == pygame.K_RSHIFT:
+                    bullet = pygame.Rect(red.x + red.width, red.y + red.height//2 - 2, 20, 10)
+                    redbullet.append(bullet)
+        keypress=pygame.key.get_pressed()
+        yellowShipMovement(keypress, yellow)
+        redShipMovement(keypress, red)
+        handleBullets(redbullet, yellowbullet, red , yellow)
+        drawWindow(red, yellow,redbullet, yellowbullet)
+    
 
 main()
-

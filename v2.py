@@ -1,0 +1,138 @@
+import os
+import pygame
+
+pygame.init()
+pygame.display.set_caption("Space Invaders Game")
+screen = pygame.display.set_mode((1000, 800))
+bg = pygame.transform.scale(pygame.image.load(os.path.join("spaceinvaders/images/bground.png")),(1000,800))
+velocity = 1
+bvelocity = 1
+hit=0
+yhit = pygame.USEREVENT+1
+rhit = pygame.USEREVENT+2
+yhealth=10
+rhealth=10
+redship = pygame.image.load(os.path.join("spaceinvaders/images/red.png"))
+yellowship = pygame.image.load(os.path.join("spaceinvaders/images/yellow.png"))
+red_ship = pygame.transform.rotate(pygame.transform.scale(redship, (60,40)),270)
+yellow_ship = pygame.transform.rotate(pygame.transform.scale(yellowship,(60,40)), 90)
+
+def drawWindow(red,yellow, redbullet, yellowbullet):
+    global hit, rhealth
+    screen.blit(bg, (0,0))
+    screen.blit(red_ship,(red.x,red.y))
+    screen.blit(yellow_ship,(yellow.x,yellow.y))
+    for i in redbullet:
+        pygame.draw.rect(screen,"red", i)
+    for i in yellowbullet:
+        pygame.draw.rect(screen,"yellow", i)
+    
+    font=pygame.font.SysFont("Arial",50)
+    textr=font.render(str(rhealth),True, "White" )
+    texty=font.render(str(yhealth),True, "White" )
+           
+    screen.blit(textr,(950,50))  
+    screen.blit(texty,(50,50))
+    
+    if hit == 1: 
+        font=pygame.font.SysFont("Arial",50)
+        text=font.render("Yellow Was Hit",True, "White" )
+           
+        screen.blit(text,(500,400))
+     
+    elif hit == 2:
+        font=pygame.font.SysFont("Arial",50)
+        text=font.render("Red Was Hit",True, "White" )
+        screen.blit(text,(500,400))
+    elif hit == 0:
+        text=font.render(" ",True, "White" )
+        screen.blit(text,(500,400))
+    if rhealth <= 0:
+        text=font.render("Yellow WON",True, "White" )
+        screen.blit(text,(500,400))
+        hit=0
+    elif yhealth <= 0:
+        text=font.render("Red WON",True, "White" )
+        screen.blit(text,(500,400))
+        hit = 0
+
+    
+    
+    pygame.display.update()
+
+
+def redShipMovement(keypress, red):
+    if keypress[pygame.K_LEFT]:
+        red.x -= velocity
+    if keypress[pygame.K_RIGHT]:
+        red.x += velocity
+    if keypress[pygame.K_DOWN]:
+        red.y += velocity
+    if keypress[pygame.K_UP]:
+        red.y -= velocity
+
+
+def yellowShipMovement(keypress, yellow):
+    if keypress[pygame.K_d]:
+        yellow.x += velocity
+    if keypress[pygame.K_a]:
+        yellow.x -= velocity
+    if keypress[pygame.K_s]:
+        yellow.y += velocity
+    if keypress[pygame.K_w]:
+        yellow.y -= velocity
+
+def handleBullets(redbullet, yellowbullet, red , yellow):
+    global hit, rhealth, yhealth
+    for bullet in redbullet:
+        bullet.x -= bvelocity
+        if yellow.colliderect(bullet):
+            redbullet.remove(bullet)
+            pygame.event.post(pygame.event.Event(yhit))
+            hit =1
+            yhealth -= 1
+            
+    
+    for bullet in yellowbullet:
+        bullet.x += bvelocity
+        if red.colliderect(bullet):
+            yellowbullet.remove(bullet)
+            pygame.event.post(pygame.event.Event(rhit))
+            hit =2
+            rhealth -= 1
+           
+    
+    
+     
+
+def main():
+    red=pygame.Rect(900,300,60,40)
+    yellow=pygame.Rect(100,300,60, 40)
+    yellowbullet=[]
+    redbullet=[]
+    while True:
+       
+        
+        
+        
+        for i in pygame.event.get():
+
+
+            if i.type == pygame.QUIT:
+                quit()
+
+            if i.type == pygame.KEYDOWN:
+                if i.key == pygame.K_LSHIFT:
+                    bullet = pygame.Rect(yellow.x + yellow.width, yellow.y + yellow.height//2 - 2, 20, 10)
+                    yellowbullet.append(bullet)
+                if i.key == pygame.K_RSHIFT:
+                    bullet = pygame.Rect(red.x + red.width, red.y + red.height//2 - 2, 20, 10)
+                    redbullet.append(bullet)
+        keypress=pygame.key.get_pressed()
+        yellowShipMovement(keypress, yellow)
+        redShipMovement(keypress, red)
+        handleBullets(redbullet, yellowbullet, red , yellow)
+        drawWindow(red, yellow,redbullet, yellowbullet)
+    
+
+main()
